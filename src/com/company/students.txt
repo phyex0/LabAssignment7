@@ -1,0 +1,11 @@
+Halit Burak,Yesildal,21,3.87
+Eda,Eser,21,3.6
+Enes,Guler,22,3.87
+Yakup Batuhan,Ordek,21,3.70
+Afife Betul,Hayta,21,3.1
+Tayyip,Barbaros,22,2.6
+Ekmek,Ekmek,18,4.0
+Cabbar,Cabbaroglu,25,1.15
+Aklıma,Gelmiyor,25,3.01
+Fake,Data,28,2.51
+Abbas,Abbas,29,3
