@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -12,17 +13,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        //Heap is already exist in Java but our required type is Student and we need to compare data due to surname.
-        // We're going to create a comparator object to satisfy given condition. The condition on return statement gives us Max Heap.
-        PriorityQueue<Student> maxHeap = new PriorityQueue<Student>(new Comparator<Student>() {
-            @Override
-            public int compare(Student s1, Student s2) {
-                return s2.getSurname().compareTo(s1.getSurname());
-            }
-        });
-
+        MaxHeap maxHeap = new MaxHeap(5);
         FileIO f = new FileIO();
         f.readFile(maxHeap);
+        //maxHeap.print();
         System.out.println(maxHeap.toString());
 
 
@@ -89,7 +83,7 @@ class Student{
 
 class FileIO{
     //com/company/students.txt
-    public void readFile(PriorityQueue heap) throws IOException {
+    public void readFile(MaxHeap heap) throws IOException {
         File f = new File("src/com/company/students.txt");
         if(!f.exists())
             f.createNewFile();
@@ -98,16 +92,130 @@ class FileIO{
 
         String line;
         String[] input;
-
         while((line=br.readLine())!=null){
             input= line.split(",");
-            heap.add(new Student(input[0],input[1],Integer.parseInt(input[2]),Double.parseDouble(input[3])));
+            heap.insert(new Student(input[0],input[1],Integer.parseInt(input[2]),Double.parseDouble(input[3])));
         }
-
         br.close();
         fr.close();
 
+    }
+}
 
 
+
+class MaxHeap {
+    private Student[] Heap;
+    private int size;
+    private int maxsize;
+
+    // Constructor to initialize an
+    // empty max heap with given maximum
+    // capacity.
+    public MaxHeap(int maxsize) {
+        this.maxsize = maxsize;
+        this.size = 0;
+        Heap = new Student[this.maxsize + 1];
+        Heap[0] = new Student("a","a",1,1);
+    }
+
+    // Returns position of parent
+    private int parent(int pos) {
+        return pos / 2;
+    }
+
+    // Below two functions return left and
+    // right children.
+    private int leftChild(int pos) {
+        return (2 * pos);
+    }
+
+    private int rightChild(int pos) {
+        return (2 * pos) + 1;
+    }
+
+    // Returns true of given node is leaf
+    private boolean isLeaf(int pos) {
+        if (pos > (size / 2) && pos <= size) {
+            return true;
+        }
+        return false;
+    }
+
+    private void swap(int fpos, int spos) {
+        Student tmp;
+        tmp = Heap[fpos];
+        Heap[fpos] = Heap[spos];
+        Heap[spos] = tmp;
+    }
+
+    // A recursive function to max heapify the given
+    // subtree. This function assumes that the left and
+    // right subtrees are already heapified, we only need
+    // to fix the root.
+    private void maxHeapify(int pos) {
+        if (isLeaf(pos))
+            return;
+        //Heap[leftChild(pos)].getSurname().compareTo(Heap[pos].getSurname())>0
+        if (Heap[leftChild(pos)].getSurname().compareTo(Heap[pos].getSurname())>0
+                || Heap[rightChild(pos)].getSurname().compareTo(Heap[pos].getSurname())>0) {
+
+            if (Heap[leftChild(pos)].getSurname().compareTo(Heap[rightChild(pos)].getSurname())>0) {
+                swap(pos, leftChild(pos));
+                maxHeapify(leftChild(pos));
+            } else {
+                swap(pos, rightChild(pos));
+                maxHeapify(rightChild(pos));
+            }
+        }
+    }
+
+    // Inserts a new element to max heap
+    public void insert(Student element) {
+        if(maxsize<=size)
+            resizeArray();
+
+        Heap[++size] = element;
+
+        // Traverse up and fix violated property
+        int current = size;
+        while (Heap[current].getSurname().compareTo(Heap[parent(current)].getSurname())>0) {
+            swap(current, parent(current));
+            current = parent(current);
+        }
+    }
+
+    public void print() {
+        for (int i = 1; i <= size / 2; i++) {
+            System.out.print(
+                    " PARENT : " + Heap[i]
+                            + " LEFT CHILD : " + Heap[2 * i]
+                            + " RIGHT CHILD :" + Heap[2 * i + 1]);
+            System.out.println();
+        }
+    }
+
+    // Remove an element from max heap
+    public Student extractMax() {
+        Student popped = Heap[1];
+        Heap[1] = Heap[size--];
+        maxHeapify(1);
+        return popped;
+    }
+
+    private void resizeArray() {
+        Student[] arr = Heap;
+        Heap = new Student[arr.length * 2];
+        // copy elements over
+        System.arraycopy(arr, 0, Heap, 0, arr.length);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 1; i < size; ++i)
+            builder.append(Heap[i]);
+
+        return builder.toString();
     }
 }
