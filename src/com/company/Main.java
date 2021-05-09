@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        MaxHeap maxHeap = new MaxHeap(5);
+        MaxHeap maxHeap = new MaxHeap();
         FileIO f = new FileIO();
         f.readFile(maxHeap);
         //maxHeap.print();
@@ -105,13 +105,12 @@ class FileIO{
 class MaxHeap {
     private Student[] Heap;
     private int size;
-    private int maxsize;
+    private int maxsize=10;
 
     // Constructor to initialize an
     // empty max heap with given maximum
     // capacity.
-    public MaxHeap(int maxsize) {
-        this.maxsize = maxsize;
+    public MaxHeap() {
         this.size = 0;
         Heap = new Student[this.maxsize + 1];
         Heap[0] = new Student("a","a",1,1);
