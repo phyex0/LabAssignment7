@@ -9,3 +9,5 @@ Cabbar,Cabbaroglu,25,1.15
 Aklıma,Gelmiyor,25,3.01
 Fake,Data,28,2.51
 Abbas,Abbas,29,3
+Hakan,Lah,21,3.2
+Ekmek,Kerim,19,1
