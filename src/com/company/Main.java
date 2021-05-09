@@ -14,8 +14,15 @@ public class Main {
         MaxHeap maxHeap = new MaxHeap();
         FileIO f = new FileIO();
         f.readFile(maxHeap);
-        //maxHeap.print();
         System.out.println(maxHeap.toString());
+        maxHeap.extractMax();
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println(maxHeap.toString());
+
+        maxHeap.extractMax();
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println(maxHeap.toString());
+
 
 
     }
@@ -92,7 +99,8 @@ class FileIO{
         String[] input;
         while((line=br.readLine())!=null){
             input= line.split(",");
-            heap.insert(new Student(input[0],input[1],Integer.parseInt(input[2]),Double.parseDouble(input[3])));
+            if(input.length==4)
+                heap.insert(new Student(input[0],input[1],Integer.parseInt(input[2]),Double.parseDouble(input[3])));
         }
         br.close();
         fr.close();
